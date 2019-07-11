@@ -34,3 +34,60 @@ services:
       - MYSQL_PASSWORD=example
     ports:
       - 3306:3306
+  front-1:
+    build: ./spring-boot-front
+    container_name: front
+    environment:
+      - SERVER_PORT=8080
+    ports:
+      - "8080:8080"
+    links:
+      - consul
+      - elk
+    depends_on:
+      - consul
+  service-1:
+    build: ./spring-boot-service
+    container_name: service-1
+    environment:
+      - SERVER_PORT=8081
+      - SERVICE_NAME=service-2
+    ports:
+      - "8081:8081"
+    links:
+      - consul
+      - mysql
+      - elk
+    depends_on:
+      - mysql
+      - consul
+      - elk
+  service-2:
+    build: ./spring-boot-service
+    container_name: service-2
+    environment:
+      - SERVER_PORT=8082
+      - SERVICE_NAME=service-2
+    ports:
+      - "8082:8082"
+    links:
+      - consul
+      - mysql
+      - elk
+    depends_on:
+      - service-1
+  service-3:
+    build: ./spring-boot-service
+    container_name: service-3
+    restart: always
+    environment:
+      - SERVER_PORT=8083
+      - SERVICE_NAME=service-3
+    ports:
+      - "8083:8083"
+    links:
+      - consul
+      - mysql
+      - elk
+    depends_on:
+      - service-2
