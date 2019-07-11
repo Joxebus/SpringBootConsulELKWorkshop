@@ -16,14 +16,18 @@ endpoints:
     enabled: true
 
 server:
-  port: 8080
-
-logging:
-  level:
-    org.thymeleaf: WARN
+  port: ${SERVER_PORT:8080}
 
 # This is a configuration defined to setup the RestTemplate
 rest:
   consul:
     root:
       uri: "http://person-service-client"
+
+logstash:
+  host: localhost
+
+logging:
+  config: classpath:log-config.xml
+  level:
+    org.thymeleaf: WARN

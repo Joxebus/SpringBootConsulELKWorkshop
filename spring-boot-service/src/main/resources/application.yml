@@ -27,8 +27,13 @@ hibernate:
   dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
+
+logstash:
+  host: localhost
 
 logging:
-  com.nearsoft: DEBUG
+  config: classpath:log-config.xml
+  level:
+    org.thymeleaf: WARN
 
